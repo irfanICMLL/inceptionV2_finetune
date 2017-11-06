@@ -51,7 +51,7 @@ If you have done everything correctly, the learning should start and can be moni
       
 The output should be something like this:
 
-
+![alt text](https://github.com/simo23/inceptionV2_finetune/blob/master/training_tensorboard.png "tensorboard")
 
 You can notice severe overfitting due to the limited amount of training data. 
        
