@@ -20,6 +20,8 @@ The repository is made by two files which contain the network definition and the
 
 2. inceptionV2_train.py: contains the definition of the graph which is needed to train the model on the dataset. As you can see, it uses the new Dataset API which is really easy to use and also quite fast. In particular this code:
 
+- Loads the pre-trained inceptionV2 model from ckpt
+
 - Loads the dataset from files: it expects jpg images placed in a pre-defined structure. The structure of the dataset must be the following: a single main folder containing all the dataset. In this main folder there is a single folder for each class. Each sub-folder has the name of the class. In each sub-folder there are the images corresponding to that class. This dataset organization is already done if you are using the CUB-200 dataset. 
 
 - Preprocess the data: once the files are loaded, they are preprocessed as the inceptionV2 wants. All images will be isotropically rescaled to have smallest side = 256 and put in range [-1,+1] and then training images will be randomly cropped and flipped while test images will be centrally cropped. There is also the possibility to add color augmentation with the 'color_augm_probability' flag which will augment the training data given a probability in range [0,1].
@@ -36,6 +38,7 @@ I used Tensorflow 1.2, Numpy, Python 2.7. I run my tests on a NVIDIA K40 GPU whi
 
 ### If you want to use this code
 
+- Download the inceptionV2 ckpt from http://download.tensorflow.org/models/inception_v2_2016_08_28.tar.gz and untar it. Then modity the 'ckpt_dir' in the args.
 - Download the CUB-200-2001 Dataset from the official source: http://www.vision.caltech.edu/visipedia-data/CUB-200-2011/CUB_200_2011.tgz and untar it where you want. 
 - Check the hyperparameters such as the learning rate. Now the code only works with a decay rate defined with the 'lr_decay_rate'. It decreases the lr every 'decrease_lr_every_epoch' epochs. My current best model starts at 0.1 and decreases it at 0.01 after 10k iterations and at 0.001 after 20k iterations. 
 - Check whether you want to change some of the logging frequencies in the args. Double check the once referring to the validation accuracy computation such as 'val_acc_every_n_epochs' and 'batches_to_check' which define when you want to compute the validation accuracy and how many batches of test data you want to check every time. Be careful that if you keep the current configurations, the test accuracy will be computed each epoch on all the test set! On the CUB-200 test set with an NVIDIA K40 it takes ~30secs.
