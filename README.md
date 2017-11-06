@@ -56,7 +56,7 @@ The output should be something like this:
 
 ![alt text](https://github.com/simo23/inceptionV2_finetune/blob/master/training_tensorboard.png "tensorboard")
 
-You can notice severe overfitting due to the limited amount of training data. The training loss does not go to zero because of the label smoothing loss which is quite consistent. You can see that the network is well stable after ~30k iterations so I stopped the training. 
+You can notice severe overfitting due to the limited amount of training data. The training loss does not go to zero because of the label smoothing and l2 loss. You can see that the network is well converged and stable after ~30k iterations so I stopped the training. 
 
        
        
