@@ -31,7 +31,7 @@ parser.add_argument('--learning_momentum',        default= 0.9,            type=
 parser.add_argument('--batch_norm_decay_rate',    default= 0.95,           type=float)
 parser.add_argument('--label_smoothing',          default= 0.1,            type=float)
 parser.add_argument('--color_augm_probability',   default= 0.0,            type=float)
-parser.add_argument('--lr_decay_rate',            default= 0.94,           type=float)
+parser.add_argument('--lr_decay_rate',            default= 0.1,           type=float)
 parser.add_argument('--clip_gradient_at',         default= 0.0,            type=float)
 parser.add_argument('--smallest_side',            default= 256.0,          type=float)
 
@@ -41,7 +41,7 @@ parser.add_argument('--log_every_iterations',     default= 10,             type=
 parser.add_argument('--check_val_acc_from_epoch', default= 0,              type=int) 
 parser.add_argument('--val_acc_every_n_epochs',   default= 1,              type=int)
 parser.add_argument('--batches_to_check',         default= 999,            type=int) # 999 = All the validation set
-parser.add_argument('--decrease_lr_every_epoch',  default= 3,              type=int)
+parser.add_argument('--decrease_lr_every_epoch',  default= 234,            type=int)
 parser.add_argument('--train_iter_per_epoch',     default= 999,            type=int) # 999 = All the training set
 
 
