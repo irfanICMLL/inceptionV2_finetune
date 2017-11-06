@@ -19,7 +19,7 @@ parser.add_argument('--train_dir',                default= './train')
 parser.add_argument('--val_dir',                  default= './test')
 parser.add_argument('--log_dir',                  default= './logs')
 parser.add_argument('--save_ckpt_dir',            default= './logs/saved_model')
-parser.add_argument('--code_path',                default= './code_backup.py')
+parser.add_argument('--code_path',                default= './inceptionV2_finetune.py')
 
 parser.add_argument('--batch_size',               default= 256,            type=int)
 parser.add_argument('--crop',                     default= 224,            type=int)
@@ -97,7 +97,7 @@ def main(args):
     num_classes = len(set(train_labels))
 
     # Copy the code into the log_dir
-    copyfile(args.code_path,args.log_dir+'/train_once.py')
+    copyfile(args.code_path,args.log_dir+'/backup.py')
 
     graph = tf.Graph()
     with graph.as_default():
