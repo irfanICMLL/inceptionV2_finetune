@@ -243,10 +243,9 @@ def main(args):
         total_loss = tf.losses.get_total_loss()
 
         global_step = tf.Variable(0,trainable=False)
+        
         learning_rate = tf.Variable(args.learning_rate,trainable=False)
-
-        optimizer = tf.train.GradientDescentOptimizer(learning_rate)
-        #optimizer = tf.train.MomentumOptimizer(learning_rate,args.learning_momentum,use_nesterov=True)
+        optimizer = tf.train.MomentumOptimizer(learning_rate,args.learning_momentum,use_nesterov=True)
 
         train_step = slim.learning.create_train_op(total_loss,optimizer,global_step=global_step,clip_gradient_norm=args.clip_gradient_at)
 
@@ -267,8 +266,7 @@ def main(args):
         tf.summary.scalar('3__val_accuracy', best_val_accuracy)
         tf.summary.scalar('4__classif_loss', classif_loss)
         tf.summary.scalar('5__l2_loss', l2_loss)
-        tf.summary.scalar('6__learning_rate1', learning_rate)
-        tf.summary.scalar('7__learning_rate2', learning_rate)
+        tf.summary.scalar('6__learning_rate', learning_rate)
 
         # --------------------------------------------------------------------------
 
