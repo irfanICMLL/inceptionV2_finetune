@@ -6,7 +6,7 @@ In particular I applied it to the CUB-200-2011 Birds Dataset, which is a famous 
 
 I decided to train the inceptionV2 model because it is rather small and light but has good performances. Also it uses batch normalization which let us improve the training speed drastically by using an high learning rate (0.1). 
 
-#### Without bounding-boxes annotations, the network reaches ~80% accuracy with a 224x224 input. 
+#### Without bounding-boxes annotations, the network reaches ~79% accuracy with a 224x224 input. 
 
 The structure of the code has been taken from this great gist: https://gist.github.com/omoindrot/dedc857cdc0e680dfb1be99762990c9c and modified to train an InceptionV2 model. Some details have been taken from this great repository of Visipedia which I recommend: https://github.com/visipedia/tf_classification/wiki/CUB-200-Image-Classification. The training details and parameters have been taken from the inceptionV2 paper https://arxiv.org/abs/1512.00567 in which there is specific section related to fine-grained classification
 
