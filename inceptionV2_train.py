@@ -22,6 +22,7 @@ parser.add_argument('--save_ckpt_dir',            default= './logs/saved_model')
 parser.add_argument('--code_path',                default= './code_backup.py')
 
 parser.add_argument('--batch_size',               default= 256,            type=int)
+parser.add_argument('--crop',                     default= 224,            type=int)
 parser.add_argument('--num_workers',              default= 32,             type=int)
 
 parser.add_argument('--learning_rate',            default= 0.1,            type=float)
@@ -31,11 +32,10 @@ parser.add_argument('--learning_momentum',        default= 0.9,            type=
 parser.add_argument('--batch_norm_decay_rate',    default= 0.95,           type=float)
 parser.add_argument('--label_smoothing',          default= 0.1,            type=float)
 parser.add_argument('--color_augm_probability',   default= 0.0,            type=float)
-parser.add_argument('--lr_decay_rate',            default= 0.1,           type=float)
+parser.add_argument('--lr_decay_rate',            default= 0.1,            type=float)
 parser.add_argument('--clip_gradient_at',         default= 0.0,            type=float)
 parser.add_argument('--smallest_side',            default= 256.0,          type=float)
 
-parser.add_argument('--crop',                     default= 224,            type=int)
 parser.add_argument('--num_epochs',               default= 999,            type=int)
 parser.add_argument('--log_every_iterations',     default= 10,             type=int)
 parser.add_argument('--check_val_acc_from_epoch', default= 0,              type=int) 
@@ -94,7 +94,6 @@ def main(args):
     # Get the list of filenames and corresponding list of labels for training et validation
     train_filenames, train_labels = list_images(args.train_dir)
     val_filenames, val_labels = list_images(args.val_dir)
-    MAX_ITERATIONS = NUM_TRAIN_IMAGES // args.batch_size
     num_classes = len(set(train_labels))
 
     # Copy the code into the log_dir
@@ -141,6 +140,7 @@ def main(args):
             image_decoded = tf.image.decode_jpeg(image_string, channels=3)          # (1)
             image = tf.cast(image_decoded, tf.float32)
 
+            # Isotropic rescaling
             smallest_side = args.smallest_side
             height, width = tf.shape(image)[0], tf.shape(image)[1]
             height = tf.to_float(height)
@@ -173,6 +173,7 @@ def main(args):
         # Preprocessing (for validation)
         def val_preprocess(image, label):
 
+            # Central crop!
             image = tf.image.resize_image_with_crop_or_pad(image, args.crop, args.crop)
 
             image = image / 255.0 
@@ -210,6 +211,7 @@ def main(args):
         train_init_op = iterator.make_initializer(batched_train_dataset)
         val_init_op = iterator.make_initializer(batched_val_dataset)
 
+        # Scope made by tf.slim to modify the weight decay and batch norm specs
         def inception_arg_scope(weight_decay=1e-4,is_training=True,batch_norm_decay=0.95,batch_norm_epsilon=0.001):
 
             batch_norm_params = {
@@ -224,7 +226,7 @@ def main(args):
                 with slim.arg_scope([slim.conv2d],weights_initializer=slim.variance_scaling_initializer(),activation_fn=tf.nn.relu,normalizer_fn=slim.batch_norm,normalizer_params=batch_norm_params) as sc:
                     return sc
 
-
+        # Define the network
         with slim.arg_scope(inception_arg_scope(weight_decay=args.weight_decay,is_training=is_training,batch_norm_decay=args.batch_norm_decay_rate)):
             logits  = inception_v2_net.inception_v2(images,num_classes=num_classes,dropout_keep_prob=args.dropout_keep_prob,is_training=is_training)
 
@@ -243,12 +245,13 @@ def main(args):
         total_loss = tf.losses.get_total_loss()
 
         global_step = tf.Variable(0,trainable=False)
-        
         learning_rate = tf.Variable(args.learning_rate,trainable=False)
         optimizer = tf.train.MomentumOptimizer(learning_rate,args.learning_momentum,use_nesterov=True)
 
+        # Create the learning op with slim.learning! Do not use the standard way because it is not recommended
         train_step = slim.learning.create_train_op(total_loss,optimizer,global_step=global_step,clip_gradient_norm=args.clip_gradient_at)
 
+        # These lines are needed to update the batchnorm moving averages
         update_ops = tf.get_collection(tf.GraphKeys.UPDATE_OPS)
         if update_ops:
             updates = tf.group(*update_ops)
@@ -258,7 +261,6 @@ def main(args):
         prediction = tf.to_int32(tf.argmax(logits,1))
         correct_prediction = tf.equal(prediction, labels)
         accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
-
         best_val_accuracy = tf.Variable(0.0,trainable=False)
 
         tf.summary.scalar('1__total_loss', total_loss)
