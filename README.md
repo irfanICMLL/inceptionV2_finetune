@@ -20,19 +20,20 @@ The repository is made by two files which contain the network definition and the
 
 2. **inceptionV2_train.py:** contains the definition of the graph which is needed to train the model on the dataset. As you can see, it uses the new Dataset API which is really easy to use and also quite fast. 
 
-In particular this code:
+
+## In particular this code:
 
 - **Loads the pre-trained inceptionV2 model from ckpt**
 
 - **Loads the dataset from files:** it expects jpg images placed in a pre-defined structure. The structure of the dataset must be the following: a single main folder containing all the dataset. In this main folder there is a single folder for each class. Each sub-folder has the name of the class. In each sub-folder there are the images corresponding to that class. This dataset organization is already done if you are using the CUB-200 dataset. 
 
-- **Preprocess the data:** once the files are loaded, they are preprocessed as the inceptionV2 wants. All images will be isotropically rescaled to have smallest side = 256 and put in range [-1,+1] and then training images will be randomly cropped and flipped while test images will be centrally cropped. There is also the possibility to add color augmentation with the 'color_augm_probability' flag which will augment the training data given a probability in range [0,1].
+- **Preprocesses the data:** once the files are loaded, they are preprocessed as the inceptionV2 wants. All images will be isotropically rescaled to have smallest side = 256 and put in range [-1,+1] and then training images will be randomly cropped and flipped while test images will be centrally cropped. There is also the possibility to add color augmentation with the 'color_augm_probability' flag which will augment the training data given a probability in range [0,1].
 
-- **Train the model:** after preprocessing the data is fed into the model, one batch at a time. You can define the log frequency of the training process in the args. The optimizer is SGD with momentum. You can also use label smoothing and gradient clipping if you want to experiment a bit. 
+- **Trains the model:** after preprocessing the data is fed into the model, one batch at a time. You can define the log frequency of the training process in the args. The optimizer is SGD with momentum. You can also use label smoothing and gradient clipping if you want to experiment a bit. 
 
-- **Evaluate the model:** during training there is the possibility to compute the accuracy of the current model on the test set. You can decide at which epoch you want to start doing it, at which frequency and how many batches to check every time. 
+- **Evaluates the model:** during training there is the possibility to compute the accuracy of the current model on the test set. You can decide at which epoch you want to start doing it, at which frequency and how many batches to check every time. 
 
-- **Save the model:** the best model is saved every time the best test accuracy is increased. The best accuracy starts at 0.0 and hopefully gets better. 
+- **Saves the model:** the best model is saved every time the best test accuracy is increased. The best accuracy starts at 0.0 and hopefully gets better. 
 
 ### Requirements
 
