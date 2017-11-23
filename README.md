@@ -40,12 +40,16 @@ I used Tensorflow 1.2, Numpy, Python 2.7. I run my tests on a NVIDIA K40 GPU whi
 
 - Download the inceptionV2 ckpt from http://download.tensorflow.org/models/inception_v2_2016_08_28.tar.gz and untar it. Then modity the 'ckpt_dir' in the args.
 - Download the CUB-200-2001 Dataset from the official source: http://www.vision.caltech.edu/visipedia-data/CUB-200-2011/CUB_200_2011.tgz and untar it where you want. 
-- Now you need to split the dataset into train and test part. There is a file called 'train_test_split.txt' which is two colums that tell you the img_id and 1/0 whether the img_id is in the training set or not. You should now create a simple script that analyzes this file and creates the train and test directories.  
+- Now you need to split the dataset into train and test part. Change the paths into split.py accordingly to the paths that you have in your system and then simply launch it:
+
+       python split.py
+    
+It should create two separate folders "train" and "test" in the paths that you declared in the file. NOTE: split.py deletes the greyscale images and saves only the RGB images. This is done because the current implementation of the model does not accept greyscale images. The total number of RGB images is 5990 train images, 5790 test images.
 - Check the hyperparameters such as the learning rate. Now the code only works with a decay rate defined with the 'lr_decay_rate'. It decreases the lr every 'decrease_lr_every_epoch' epochs. My current best model starts at 0.1 and decreases it at 0.01 after 10k iterations and at 0.001 after 20k iterations. 
 - Check whether you want to change some of the logging frequencies in the args. Double check the once referring to the validation accuracy computation such as 'val_acc_every_n_epochs' and 'batches_to_check' which define when you want to compute the validation accuracy and how many batches of test data you want to check every time. Be careful that if you keep the current configurations, the test accuracy will be computed each epoch on all the test set! On the CUB-200 test set with an NVIDIA K40 it takes ~30secs.
 - Change the paths to the dataset in the code or by the args and launch
 
-       python inceptionV2_train.py
+      python inceptionV2_train.py
 
 ### What should happen
 
