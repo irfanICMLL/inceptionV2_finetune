@@ -21,7 +21,7 @@ The repository is made by two files which contain the network definition and the
 2. **inceptionV2_train.py:** contains the definition of the graph which is needed to train the model on the dataset. As you can see, it uses the new Dataset API which is really easy to use and also quite fast. 
 
 
-### In particular this code:
+### What does this code do?
 
 - **Loads the pre-trained inceptionV2 model from ckpt**
 
