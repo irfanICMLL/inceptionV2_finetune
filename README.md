@@ -18,7 +18,7 @@ The repository is made by two files which contain the network definition and the
 
 1. **inceptionV2_net.py:** contains the definition of the network and nothing else. I deleted all the things that were not necessary to make this code run. I did that because I found the inceptionV2 structure quite complex to understand as it was written in the slim repository, so now it should be easier to understand. If you want to take a look at the original code by slim is here: https://github.com/tensorflow/tensorflow/blob/master/tensorflow/contrib/slim/python/slim/nets/inception_v2.py 
 
-2. ****inceptionV2_train.py:** contains the definition of the graph which is needed to train the model on the dataset. As you can see, it uses the new Dataset API which is really easy to use and also quite fast. 
+2. **inceptionV2_train.py:** contains the definition of the graph which is needed to train the model on the dataset. As you can see, it uses the new Dataset API which is really easy to use and also quite fast. 
 
 In particular this code:
 
