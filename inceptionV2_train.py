@@ -21,11 +21,11 @@ parser.add_argument('--log_dir',                  default= './logs')
 parser.add_argument('--save_ckpt_dir',            default= './logs/saved_model')
 parser.add_argument('--code_path',                default= './inceptionV2_finetune.py')
 
-parser.add_argument('--batch_size',               default= 256,            type=int)
+parser.add_argument('--batch_size',               default= 32,            type=int)
 parser.add_argument('--crop',                     default= 224,            type=int)
 parser.add_argument('--num_workers',              default= 32,             type=int)
 
-parser.add_argument('--learning_rate',            default= 0.1,            type=float)
+parser.add_argument('--learning_rate',            default= 0.01,            type=float)
 parser.add_argument('--dropout_keep_prob',        default= 0.3,            type=float)
 parser.add_argument('--weight_decay',             default= 1e-4,           type=float)
 parser.add_argument('--learning_momentum',        default= 0.9,            type=float)
@@ -33,7 +33,7 @@ parser.add_argument('--batch_norm_decay_rate',    default= 0.95,           type=
 parser.add_argument('--label_smoothing',          default= 0.1,            type=float)
 parser.add_argument('--color_augm_probability',   default= 0.0,            type=float)
 parser.add_argument('--lr_decay_rate',            default= 0.1,            type=float)
-parser.add_argument('--clip_gradient_at',         default= 0.0,            type=float)
+parser.add_argument('--clip_gradient_at',         default= 2.0,            type=float)
 parser.add_argument('--smallest_side',            default= 256.0,          type=float)
 
 parser.add_argument('--num_epochs',               default= 999,            type=int)
